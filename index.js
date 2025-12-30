@@ -101,8 +101,8 @@ bot.on('message', msg => {
     console.log('☠️ O‘LDI → qaytish')
     botStatus = '☠️ o‘ldi → home'
 
-    setTimeout(() => bot.chat('/server anarxiya'), 4000)
-    setTimeout(() => bot.chat('/home'), 8000)
+    setTimeout(() => bot.chat('/server smp'), 4000)
+    setTimeout(() => bot.chat('/team home'), 8000)
   })
 
   // ===== OCHLIK =====

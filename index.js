@@ -1,7 +1,7 @@
 const mineflayer = require('mineflayer')
 const express = require('express')
 
-// ===== WEB (Render / Uptime) =====
+// ===== WEB (Render / UptimeRobot) =====
 const app = express()
 const PORT = process.env.PORT || 3000
 let botStatus = '⏳ starting...'
@@ -16,12 +16,11 @@ app.listen(PORT, () => console.log('🌐 WEB OK:', PORT))
 // ===== SOZLAMALAR =====
 const HOST = 'articraft.uz'
 const MC_PORT = 25565
-const USERNAME = 'abuuuu'
+const USERNAME = 'sh_ssss_'
 const VERSION = '1.21'
-const PASSWORD = '252356n1'
+const PASSWORD = 'uwu111'
 
 const ADMIN = 'itzRellixsMF'
-const TARGET_SERVER = 'smp'
 
 const RECONNECT_DELAY = 5000
 const ANTI_AFK_INTERVAL = 5 * 60 * 1000
@@ -52,84 +51,70 @@ function setupEvents () {
     console.log('🟢 SPAWN')
     botStatus = '🟡 tekshirilyapti'
 
-    setTimeout(() => bot.chat(`/login ${PASSWORD}`), 2000)
-    setTimeout(() => bot.chat(`/server ${TARGET_SERVER}`), 6000)
-    setTimeout(() => bot.chat('/home'), 10000)
+    setTimeout(() => {
+      bot.chat(`/login ${PASSWORD}`)
+    }, 2000)
 
-    startAntiAfk()
+    setTimeout(() => {
+      bot.chat('/server smp')
+    }, 6000)
+
+    setTimeout(() => {
+      bot.chat('/team home')
+      startAntiAfk()
+      botStatus = '🟢 AFK (SMP)'
+    }, 10000)
   })
 
   // ===== CHAT =====
-  bot.on('message', msg => {
-    const text = msg.toString()
-    console.log('💬', text)
+  // ===== CHAT =====
+bot.on('message', msg => {
+  const text = msg.toString()
+  console.log('💬', text)
 
-    if (!loggedIn && /login|\/l/i.test(text)) {
-      bot.chat(`/login ${PASSWORD}`)
-      loggedIn = true
+  // LOGIN aniqlansa
+  if (!loggedIn && /login|ʟᴏɢɪɴ|\/l/i.test(text)) {
+    bot.chat(`/login ${PASSWORD}`)
+    loggedIn = true
+  }
+
+  // PM xabarlarni aniqlash
+  const pm = text.match(/\[([^\]]+)\s→\sme\]\s(.+)/i)
+  if (pm) {
+    const sender = pm[1]
+    const message = pm[2]
+
+    // Agar xabar admindan bo‘lsa sukutda qoladi
+    if (sender === ADMIN) {
+      console.log('📩 ADMIN PM:', message)
+    } else {
+      // Boshqalar global chatga yoziladi
+      bot.chat(`${sender}: ${message}`)
+      console.log('🌐 Global chatga takrorlandi:', message)
     }
+  }
+})
 
-    const pm = text.match(/\[([^\]]+)\s→\sme\]\s(.+)/i)
-    if (pm) {
-      const sender = pm[1]
-      const message = pm[2]
-
-      if (sender === ADMIN) {
-        console.log('📩 ADMIN PM:', message)
-      } else {
-        bot.chat(`${sender}: ${message}`)
-      }
-    }
-  })
-
-  // ===== GUI AUTO CLICK (HOME + TPA CONFIRM) =====
-  bot.on('windowOpen', async (window) => {
-    try {
-      const title = window.title?.toString() || ''
-      console.log('🪟 GUI:', title)
-
-      // HOME / BED GUI → 1-kravat
-      if (/home|uy|bed|spawn/i.test(title)) {
-        console.log('🛏️ 1-kravat tanlanmoqda')
-        await bot.clickWindow(0, 0, 0)
-        botStatus = '🟢 AFK (uyda)'
-      }
-
-      // TPA CONFIRM GUI → YES (yashil)
-      if (/confirm|request/i.test(title)) {
-        console.log('✅ TPA CONFIRM → YES')
-
-        // odatda YES oxirgi slotlarda bo‘ladi (8 yoki 26)
-        const yesSlot =
-          window.slots.findIndex(i =>
-            i && (i.name.includes('lime') || i.name.includes('green'))
-          )
-
-        if (yesSlot !== -1) {
-          await bot.clickWindow(yesSlot, 0, 0)
-          console.log('🤝 TPA qabul qilindi')
-        }
-      }
-    } catch (e) {
-      console.log('❌ GUI xato:', e.message)
-    }
-  })
 
   // ===== O‘LIM =====
   bot.on('death', () => {
     console.log('☠️ O‘LDI → qaytish')
-    botStatus = '☠️ o‘ldi → uy'
+    botStatus = '☠️ o‘ldi → home'
 
-    setTimeout(() => bot.chat(`/server ${TARGET_SERVER}`), 4000)
-    setTimeout(() => bot.chat('/team home'), 9000)
+    setTimeout(() => bot.chat('/server anarxiya'), 4000)
+    setTimeout(() => bot.chat('/home'), 8000)
   })
 
   // ===== OCHLIK =====
   bot.on('health', async () => {
     if (bot.food <= 14) {
       const food = bot.inventory.items().find(i =>
-        ['bread', 'beef', 'pork', 'chicken'].some(f => i.name.includes(f))
+        i.name.includes('bread') ||
+        i.name.includes('beef') ||
+        i.name.includes('pork') ||
+        i.name.includes('chicken')
       )
+
       if (food) {
         try {
           await bot.equip(food, 'hand')
@@ -162,7 +147,7 @@ function startAntiAfk () {
     bot.look(Math.random() * Math.PI * 2, 0, true)
   }, ANTI_AFK_INTERVAL)
 
-  console.log('🟢 Anti-AFK OK')
+  console.log('🟢 Anti‑AFK OK')
 }
 
 // ===== RECONNECT =====

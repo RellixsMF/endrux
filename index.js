@@ -14,11 +14,11 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => console.log('🌐 WEB OK:', PORT))
 
 // ===== SOZLAMALAR =====
-const HOST = 'articraft.uz'
+const HOST = 'kotlar67.aternos.me'
 const MC_PORT = 25565
-const USERNAME = 'sh_ssss_'
+const USERNAME = '24/7_afk_bot'
 const VERSION = '1.21'
-const PASSWORD = 'uwu111'
+const PASSWORD = 'your_password_here' // Parolni shu yerga yozing
 
 const ADMIN = 'itzRellixsMF'
 
@@ -56,11 +56,11 @@ function setupEvents () {
     }, 2000)
 
     setTimeout(() => {
-      bot.chat('/server smp')
+      bot.chat('/gamemode creative')
     }, 6000)
 
     setTimeout(() => {
-      bot.chat('/team home')
+      bot.chat('/gamemode creative')
       startAntiAfk()
       botStatus = '🟢 AFK (SMP)'
     }, 10000)
@@ -101,8 +101,8 @@ bot.on('message', msg => {
     console.log('☠️ O‘LDI → qaytish')
     botStatus = '☠️ o‘ldi → home'
 
-    setTimeout(() => bot.chat('/server smp'), 4000)
-    setTimeout(() => bot.chat('/team home'), 8000)
+    setTimeout(() => bot.chat('/gamemode creative'), 4000)
+    setTimeout(() => bot.chat('/gamemode creative'), 8000)
   })
 
   // ===== OCHLIK =====
